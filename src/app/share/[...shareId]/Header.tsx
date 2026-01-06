@@ -1,7 +1,7 @@
-import { Icon, Row, Text, ThemeButton } from '@umami/react-zen';
-import { LanguageButton } from '@/components/input/LanguageButton';
-import { PreferencesButton } from '@/components/input/PreferencesButton';
-import { Logo } from '@/components/svg';
+import { Icon, Row, Text, ThemeButton } from "@umami/react-zen";
+import { LanguageButton } from "@/components/input/LanguageButton";
+import { PreferencesButton } from "@/components/input/PreferencesButton";
+import { Logo } from "@/components/svg";
 
 export function Header() {
   return (
@@ -11,7 +11,7 @@ export function Header() {
           <Icon>
             <Logo />
           </Icon>
-          <Text weight="bold">umami</Text>
+          <Text weight="bold">Syncfuse</Text>
         </Row>
       </a>
       <Row alignItems="center" gap>
