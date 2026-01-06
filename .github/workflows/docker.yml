@@ -1,4 +1,4 @@
-name: 🚀 Build & Push Umami to Docker Hub
+name: 🚀 Umami Docker Hub Auto-Build
 on:
   push:
     branches: ['**']
@@ -6,10 +6,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
     - name: Docker meta
       id: meta
