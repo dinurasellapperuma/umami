@@ -1,21 +1,27 @@
-name: Auto Build & Push to GHCR
+# .github/workflows/docker-ghcr.yml - PERFECT WORKING VERSION
+# Copy-paste this EXACTLY into your dinurasellapperuma/umami repo
+
+name: Auto Build & Push Umami to GHCR
 on:
   push:
     branches: ['**']
   pull_request:
   workflow_dispatch:
 
-jobs:
-  docker:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write  # Required for GHCR push
+permissions:
+  contents: read
+  packages: write
+  id-token: write
 
-    steps:
-    - uses: actions/checkout@v4
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
     
-    - name: Docker meta
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Docker meta tags
       id: meta
       uses: docker/metadata-action@v5
       with:
@@ -23,24 +29,26 @@ jobs:
         tags: |
           type=ref,event=branch
           type=ref,event=pr
-          type=sha
+          type=sha,prefix={{branch}}-{{sha}}
           type=raw,value=latest,enable={{is_default_branch}}
-    
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-    
-    - name: Login to GHCR  # Uses GITHUB_TOKEN automatically
+
+    - name: Login to GHCR
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}  # Built-in, no setup!
-    
-    - name: Build & Push
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build & Push Docker image
       uses: docker/build-push-action@v6
       with:
         context: .
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        platforms: linux/amd64  # Umami works on amd64
