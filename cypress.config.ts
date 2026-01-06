@@ -6,8 +6,8 @@ export default defineConfig({
   },
   // default username / password on init
   env: {
-    umami_user: "dixy",
-    umami_password: "dixy",
+    umami_user: "syncfuse",
+    umami_password: "syncfuse",
     umami_user_id: "41e2b680-648e-4b09-bcd7-3e2b10c06264",
   },
 });
